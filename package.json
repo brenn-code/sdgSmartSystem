@@ -9,5 +9,17 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brenn-code/sdgSmartSystem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brenn-code/sdgSmartSystem/issues"
+  },
+  "homepage": "https://github.com/brenn-code/sdgSmartSystem#readme",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.1"
+  }
 }

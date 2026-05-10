@@ -1,44 +1,31 @@
 syntax = "proto3";
 
-
 package safety;
 
-service WorkplaceSafetyService{
-	rpc AddWorker (AddWorkerRequest) returns (Worker);
-	rpc GetStatus (Empty) returns (WorkerList);
-	rpc GenerateAlerts (Empty) returns (AlertList);
+service SafetyService {
 
+  rpc CheckFatigue (SafetyRequest)
+      returns (SafetyReply);
+
+  rpc StreamAlerts (AlertRequest)
+      returns (stream AlertReply);
 }
 
-//Worker details
-message Worker{
-	string id = 1;
-	int32 hoursWorked = 2;
-	int32 tasksCompleted = 3;
-	int32 breaksTaken = 4;
-	string fatigueLevel = 5;
-
+message SafetyRequest {
+  string workerName = 1;
+  int32 hoursWorked = 2;
+  bool unsafeCondition = 3;
 }
 
-//Requests
-message AddWorkerRequest{
-	string id =1;
-	int32 hoursWorked = 2;
-	int32 tasksCompleted = 3;
-	int32 breaksTaken = 4;
-
+message SafetyReply {
+  string status = 1;
+  bool alert = 2;
 }
 
-//Responses
-message WorkerList{
-	repeated Worker workers = 1;
+message AlertRequest {
+  string site = 1;
 }
-//
-message Alert{
-	string message = 1;
+
+message AlertReply {
+  string message = 1;
 }
-message AlertList{
-	repeated Alert alerts = 1;
-}
-//Empty Requests
-message Empty{}

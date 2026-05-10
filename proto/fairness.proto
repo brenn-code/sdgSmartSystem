@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package fairness;
+
+service FairnessService {
+
+  rpc CheckSalary (SalaryRequest)
+      returns (SalaryReply);
+
+  rpc UploadContracts (stream ContractRequest)
+      returns (ContractSummary);
+}
+
+message SalaryRequest {
+  string role = 1;
+  double salary = 2;
+}
+
+message SalaryReply {
+  string result = 1;
+  bool underpaid = 2;
+}
+
+message ContractRequest {
+  string employee = 1;
+  bool stable = 2;
+}
+
+message ContractSummary {
+  int32 stableContracts = 1;
+  int32 unstableContracts = 2;
+}
