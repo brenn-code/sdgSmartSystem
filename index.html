@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SDG 8 Command Centre</title>
+</head>
+<body>
+
+<h1>SDG 8 Management Dashboard</h1>
+
+<hr>
+
+<h2>Safety Monitoring</h2>
+
+<input id="worker" placeholder="Worker Name">
+<input id="hours" type="number" placeholder="Hours Worked">
+
+<button onclick="checkFatigue()">
+Check Fatigue
+</button>
+
+<p id="fatigueResult"></p>
+
+<hr>
+
+<h2>Fair Employment</h2>
+
+<input id="role" placeholder="Role">
+<input id="salary" type="number" placeholder="Salary">
+
+<button onclick="checkSalary()">
+Check Salary
+</button>
+
+<p id="salaryResult"></p>
+
+<hr>
+
+<h2>Weather Impact</h2>
+
+<input id="temp" type="number" placeholder="Temperature">
+<input id="wind" type="number" placeholder="Wind Speed">
+
+<button onclick="checkWeather()">
+Check Weather
+</button>
+
+<p id="weatherResult"></p>
+
+<script>
+
+async function checkFatigue() {
+
+  const name = document.getElementById("worker").value;
+  const hours = document.getElementById("hours").value;
+
+// Calls Express API gateway, which forwards request to Safety gRPC service
+  const response = await fetch(
+    `/api/fatigue?name=${name}&hours=${hours}&unsafe=false`
+  );
+
+  const data = await response.json();
+
+  document.getElementById("fatigueResult").innerText =
+    data.status;
+}
+
+async function checkSalary() {
+
+  const role = document.getElementById("role").value;
+  const salary = document.getElementById("salary").value;
+
+// Sends role n salary to backend fairness service via Express gRPC
+  const response = await fetch(
+    `/api/salary?role=${role}&salary=${salary}`
+  );
+
+  const data = await response.json();
+
+  document.getElementById("salaryResult").innerText =
+    data.result;
+}
+
+async function checkWeather() {
+
+  const temp = document.getElementById("temp").value;
+  const wind = document.getElementById("wind").value;
+
+    // Sends  conditions to backend weather service
+
+  const response = await fetch(
+    `/api/weather?temp=${temp}&wind=${wind}&storm=false`
+  );
+
+  const data = await response.json();
+
+  document.getElementById("weatherResult").innerText =
+    `Risk: ${data.risk} | Productivity Impact: ${data.productivityImpact}%`;
+}
+
+</script>
+
+</body>
+</html>
