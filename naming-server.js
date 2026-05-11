@@ -4,9 +4,11 @@ const path = require("path");
 
 const PROTO_PATH = path.join(__dirname, "naming.proto");
 
+// Load proto file into a gRPC-compatible object
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const namingProto = grpc.loadPackageDefinition(packageDefinition).naming;
 
+// Simple in-memory registry (no persistence)
 const registry = {};
 
 function RegisterService(call, callback) {
@@ -24,6 +26,7 @@ function RegisterService(call, callback) {
 function DiscoverService(call, callback) {
   const { serviceName } = call.request;
 
+  // Return gRPC NOT_FOUND if service doesn't exist
   if (!registry[serviceName]) {
     return callback({
       code: grpc.status.NOT_FOUND,
@@ -38,11 +41,13 @@ function DiscoverService(call, callback) {
 
 const server = new grpc.Server();
 
+// Register service implementation with gRPC server
 server.addService(namingProto.NamingService.service, {
   RegisterService,
   DiscoverService
 });
 
+// Start server on local port
 server.bindAsync(
   "127.0.0.1:50050",
   grpc.ServerCredentials.createInsecure(),

@@ -1,25 +1,28 @@
-syntax = "proto3";
+syntax = "proto3"; 
 
-package naming;
+package naming; 
 
 service NamingService {
+  // Registers a service name with its network address
   rpc RegisterService (RegisterRequest) returns (RegisterReply);
+
+  // Looks up a service name and returns its address
   rpc DiscoverService (DiscoverRequest) returns (DiscoverReply);
 }
 
 message RegisterRequest {
-  string serviceName = 1;
-  string address = 2;
+  string serviceName = 1; 
+  string address = 2;      // Host port or service endpoint
 }
 
 message RegisterReply {
-  string message = 1;
+  string message = 1; // Confirm message
 }
 
 message DiscoverRequest {
-  string serviceName = 1;
+  string serviceName = 1; // Service to look up
 }
 
 message DiscoverReply {
-  string address = 1;
+  string address = 1; // Resolved service address
 }
