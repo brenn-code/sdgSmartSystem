@@ -1,0 +1,34 @@
+
+syntax = "proto3";
+
+package weather;
+
+service WeatherService {
+
+	//unary RPC
+  rpc AssessWeatherImpact (WeatherRequest)
+      returns (WeatherReply);
+
+	//Bidirectional RPC
+  rpc LiveSimulation (stream SimulationRequest)
+      returns (stream SimulationReply);
+}
+
+message WeatherRequest {
+  double temperature = 1;
+  double windSpeed = 2;
+  bool storm = 3;
+}
+//Response
+message WeatherReply {
+  string risk = 1;
+  double productivityImpact = 2;
+}
+
+message SimulationRequest {
+  string scenario = 1;
+}
+
+message SimulationReply {
+  string update = 1;
+}
