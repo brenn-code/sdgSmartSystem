@@ -28,11 +28,17 @@ function CheckSalary(call, callback) {
 
   const underpaid = salary < benchmark;
 
+  let result;
+
+  if (underpaid) {
+    result = "Potential underpayment detected";
+  } else {
+    result = "Salary appears fair";
+  }
+
   callback(null, {
-    result: underpaid
-      ? "Potential underpayment detected"
-      : "Salary appears fair",
-    underpaid
+    result: result,
+    underpaid: underpaid
   });
 }
 
@@ -44,18 +50,20 @@ function UploadContracts(call, callback) {
   call.on("data", (contract) => {
 
     if (contract.stable) {
-      stableContracts++;
+      stableContracts = stableContracts + 1;
     } else {
-      unstableContracts++;
+      unstableContracts = unstableContracts + 1;
     }
+
   });
 
   call.on("end", () => {
 
     callback(null, {
-      stableContracts,
-      unstableContracts
+      stableContracts: stableContracts,
+      unstableContracts: unstableContracts
     });
+
   });
 }
 
